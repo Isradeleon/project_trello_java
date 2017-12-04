@@ -4,14 +4,19 @@
  * and open the template in the editor.
  */
 package views;
+import java.awt.Color;
+import java.awt.Component;
 import java.sql.ResultSet;
 import models.Tarea;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import models.Proyecto;
+import view_dialogs.EditingTask;
 /**
  *
  * @author cesargustavo
@@ -21,13 +26,18 @@ public class ViewTareas extends javax.swing.JPanel {
         private Proyecto proj;
         private DefaultTableModel modelo;
         private ResultSet results;
+        private EditingTask edt;
     /**
      * Creates new form ViewTareas
      */
-    public ViewTareas() {
+    public ViewTareas(AdminView _frame) {
         initComponents();
         proj = new Proyecto();
         tareas = new Tarea();
+        
+        edt = new EditingTask(_frame,true);
+        edt.setViewTareas(this);
+        
         modelo = new DefaultTableModel(){
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
@@ -36,14 +46,54 @@ public class ViewTareas extends javax.swing.JPanel {
         modelo.addColumn("ID");
         modelo.addColumn("Titulo");
         modelo.addColumn("Descripcion");
-        modelo.addColumn("proyecto");
+        modelo.addColumn("Responsable");
+        modelo.addColumn("Email");
+        modelo.addColumn("Status");
+        modelo.addColumn("Proyecto");
+        
         this.jTable1.setModel(modelo);
+        
+        // COLORES DE LAS ROWS
+        this.jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                        
+                String status = (String)table.getModel().getValueAt(row, 5);
+                if (isSelected) {
+                    c.setBackground(Color.blue.darker());
+                    c.setForeground(Color.white);
+                }else{
+                    if (col == 5) {
+                        c.setForeground(Color.white);
+                        switch(status){
+                            case "Pendiente":
+                                c.setBackground(Color.orange.darker());
+                            break;
+                            case "Cancelada":
+                                c.setBackground(Color.red.darker());
+                            break;
+                            case "Terminada":
+                                c.setBackground(Color.green.darker());
+                            break;
+                        }
+                    }else{
+                        c.setBackground(null);
+                        c.setForeground(Color.black);
+                    }
+                }
+                return this;
+            }   
+        });
+        
         this.jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
     
     public void actualizarbox(){
         this.jComboBox1.removeAllItems();
-        results = proj.getAll();
+        results = proj.getAllPending();
         try{
             while(results.next()){
                 this.jComboBox1.addItem(results.getString("titulo"));
@@ -62,6 +112,16 @@ public class ViewTareas extends javax.swing.JPanel {
                     results.getString("id"),
                     results.getString("titulo"),
                     results.getString("descripcion"),
+                    ( results.getString("u_nombre") != null 
+                            && 
+                            !results.getString("u_nombre").isEmpty()
+                            &&
+                            results.getString("u_apellidos") != null
+                            &&
+                            !results.getString("u_apellidos").isEmpty()
+                    ) ? results.getString("u_nombre")+" "+results.getString("u_apellidos") : "No asignado.",
+                    (results.getString("u_email") != null && !results.getString("u_email").isEmpty()) ? results.getString("u_email") : " - ",
+                    (results.getInt("status") == 1 ? "Pendiente" : (results.getInt("status") == 2) ? "Cancelada" : "Terminada" ),
                     results.getString("p_titulo")
                 });
             }
@@ -91,6 +151,8 @@ public class ViewTareas extends javax.swing.JPanel {
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        editarTarea = new javax.swing.JButton();
+        detallesTarea = new javax.swing.JButton();
 
         PanelAgregarProyecto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -115,7 +177,7 @@ public class ViewTareas extends javax.swing.JPanel {
         jLabel4.setText("Descripcion:");
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jLabel5.setText("Proyecto");
+        jLabel5.setText("Proyecto:");
 
         AddTareas.setBackground(new java.awt.Color(0, 42, 73));
         AddTareas.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
@@ -143,6 +205,26 @@ public class ViewTareas extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        editarTarea.setBackground(new java.awt.Color(0, 42, 73));
+        editarTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        editarTarea.setForeground(new java.awt.Color(255, 255, 255));
+        editarTarea.setText("Editar");
+        editarTarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarTareaActionPerformed(evt);
+            }
+        });
+
+        detallesTarea.setBackground(new java.awt.Color(0, 42, 73));
+        detallesTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        detallesTarea.setForeground(new java.awt.Color(255, 255, 255));
+        detallesTarea.setText("Detalles");
+        detallesTarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                detallesTareaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelAgregarProyectoLayout = new javax.swing.GroupLayout(PanelAgregarProyecto);
         PanelAgregarProyecto.setLayout(PanelAgregarProyectoLayout);
         PanelAgregarProyectoLayout.setHorizontalGroup(
@@ -166,7 +248,12 @@ public class ViewTareas extends javax.swing.JPanel {
                                 .addComponent(txtdescripcion, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txttitulo, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgregarProyectoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(detallesTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(editarTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         PanelAgregarProyectoLayout.setVerticalGroup(
@@ -175,9 +262,6 @@ public class ViewTareas extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(22, Short.MAX_VALUE))
                     .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,9 +274,14 @@ public class ViewTareas extends javax.swing.JPanel {
                         .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AddTareas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16))))
+                        .addGap(18, 18, 18)
+                        .addComponent(AddTareas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(detallesTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -203,7 +292,9 @@ public class ViewTareas extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelAgregarProyecto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(PanelAgregarProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -220,7 +311,7 @@ public class ViewTareas extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -252,10 +343,25 @@ public class ViewTareas extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void editarTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarTareaActionPerformed
+        // TODO add your handling code here:
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            this.edt.setTaskData(Integer.valueOf( String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 0) ) ));
+            this.edt.setVisible(true);
+        }else
+            JOptionPane.showMessageDialog(this, "Seleccione una tarea!");
+    }//GEN-LAST:event_editarTareaActionPerformed
+
+    private void detallesTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detallesTareaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_detallesTareaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddTareas;
     private javax.swing.JPanel PanelAgregarProyecto;
+    private javax.swing.JButton detallesTarea;
+    private javax.swing.JButton editarTarea;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

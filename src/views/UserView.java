@@ -4,17 +4,14 @@
  * and open the template in the editor.
  */
 package views;
-
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import views.ViewTareas;
-import views.ViewPrincipal;
 /**
  *
  * @author cesargustavo
  */
 public class UserView extends javax.swing.JFrame {
-     ViewTareas tarea;
+     
      ViewPrincipal principal;
     /**
      * Creates new form AdminView
@@ -25,11 +22,6 @@ public class UserView extends javax.swing.JFrame {
         this.setUndecorated(true);
         
         principal= new ViewPrincipal();
-        principal.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
-        PanelGeneral.removeAll();
-        PanelGeneral.add(principal,BorderLayout.CENTER);
-        PanelGeneral.revalidate();
-        PanelGeneral.repaint();
     }
 
     /**
@@ -150,7 +142,7 @@ public class UserView extends javax.swing.JFrame {
         );
 
         labelUsuario.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        labelUsuario.setText("Bienvenido Usuario");
+        labelUsuario.setText("Panel de usuario");
 
         PanelGeneral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -198,7 +190,7 @@ public class UserView extends javax.swing.JFrame {
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
         // TODO add your handling code here:
-        principal= new ViewPrincipal();
+        principal.actualizarTabla();
         principal.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
         PanelGeneral.removeAll();
         PanelGeneral.add(principal,BorderLayout.CENTER);
@@ -208,17 +200,12 @@ public class UserView extends javax.swing.JFrame {
 
     private void ProyectosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProyectosActionPerformed
         // TODO add your handling code here:
-        tarea= new ViewTareas();
-        tarea.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
-        PanelGeneral.removeAll();
-        PanelGeneral.add(tarea,BorderLayout.CENTER);
-        PanelGeneral.revalidate();
-        PanelGeneral.repaint();
+       
     }//GEN-LAST:event_ProyectosActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         // TODO add your handling code here:
-        
+        System.exit(1);
     }//GEN-LAST:event_SalirActionPerformed
 
     /**

@@ -86,4 +86,20 @@ public class Proyecto extends Model_T {
         }
         return null;
     }
+    
+    public ResultSet getAllPending(){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = "select * from proyectos "
+                        + "where status = 1 "
+                        + "order by id";
+                ResultSet results = stm.executeQuery(query);
+                return results;
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
 }

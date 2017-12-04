@@ -17,7 +17,7 @@ import models.Proyecto;
 public class AdminView extends javax.swing.JFrame {
     ViewProyectos view_projects;
     ViewUsuarios view_users;
-    ViewGeneral general;
+    ViewDashboard general;
     ViewTareas view_tasks;
     ResultSet results;
     Proyecto proj;
@@ -32,9 +32,10 @@ public class AdminView extends javax.swing.JFrame {
         proj = new Proyecto();
         
         view_projects=new ViewProyectos(this);
-        general= new ViewGeneral();
+        view_tasks= new ViewTareas(this);
+        
+        general= new ViewDashboard();
         view_users= new ViewUsuarios();
-        view_tasks= new ViewTareas();
     }
 
     /**
@@ -204,7 +205,7 @@ public class AdminView extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel2.setText("Bienvendido Administrador");
+        jLabel2.setText("Usuario Administrador");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -238,7 +239,7 @@ public class AdminView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
-        general= new ViewGeneral();
+        general= new ViewDashboard();
         general.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
         PanelGeneral.removeAll();
         PanelGeneral.add(general,BorderLayout.CENTER);
@@ -271,7 +272,7 @@ public class AdminView extends javax.swing.JFrame {
 
     private void TareasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TareasActionPerformed
         // TODO add your handling code here:
-        results = proj.getAll();
+        results = proj.getAllPending();
         try{
             if (results.first()) {
                 view_tasks.actualizarTabla();
@@ -282,7 +283,7 @@ public class AdminView extends javax.swing.JFrame {
                 PanelGeneral.revalidate();
                 PanelGeneral.repaint();
             }else
-                JOptionPane.showMessageDialog(this, "No hay proyectos!");
+                JOptionPane.showMessageDialog(this, "No hay proyectos pendientes!");
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }

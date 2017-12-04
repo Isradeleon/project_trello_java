@@ -10,11 +10,12 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import models.Proyecto;
-import edition_dialogs.EditingProject;
+import view_dialogs.EditingProject;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import view_dialogs.DialogTasks;
 /**
  *
  * @author cesargustavo
@@ -24,6 +25,7 @@ public class ViewProyectos extends javax.swing.JPanel {
     private DefaultTableModel modelo;
     private ResultSet results; 
     private EditingProject edp;
+    private DialogTasks dtsk;
     
     /**
      * Creates new form Panel1
@@ -34,6 +36,7 @@ public class ViewProyectos extends javax.swing.JPanel {
         proj = new Proyecto();
         edp = new EditingProject(_frame,true);
         edp.setViewProyectos(this);
+        dtsk=new DialogTasks(_frame,true);
         
         modelo = new DefaultTableModel(){
             @Override
@@ -66,7 +69,7 @@ public class ViewProyectos extends javax.swing.JPanel {
                         c.setForeground(Color.white);
                         switch(status){
                             case "Pendiente":
-                                c.setBackground(Color.yellow.darker());
+                                c.setBackground(Color.orange.darker());
                             break;
                             case "Cancelado":
                                 c.setBackground(Color.red.darker());
@@ -80,19 +83,9 @@ public class ViewProyectos extends javax.swing.JPanel {
                         c.setForeground(Color.black);
                     }
                 }
-                
-                
-                //if ("active".equals(status)) {
-                  //  setBackground(Color.);
-                   // setForeground(Color.WHITE);
-                //} else {
-                 //   setBackground(table.getBackground());
-                  //  setForeground(table.getForeground());
-                //}
                 return this;
             }   
         });
-        // COLORES DE LAS ROWS
         
         this.jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
@@ -135,6 +128,7 @@ public class ViewProyectos extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         editarProj = new javax.swing.JButton();
+        Proyectos2 = new javax.swing.JButton();
 
         PanelAgregarProyecto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -183,6 +177,16 @@ public class ViewProyectos extends javax.swing.JPanel {
             }
         });
 
+        Proyectos2.setBackground(new java.awt.Color(0, 42, 73));
+        Proyectos2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        Proyectos2.setForeground(new java.awt.Color(255, 255, 255));
+        Proyectos2.setText("Ver tareas");
+        Proyectos2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Proyectos2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelAgregarProyectoLayout = new javax.swing.GroupLayout(PanelAgregarProyecto);
         PanelAgregarProyecto.setLayout(PanelAgregarProyectoLayout);
         PanelAgregarProyectoLayout.setHorizontalGroup(
@@ -204,6 +208,8 @@ public class ViewProyectos extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgregarProyectoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(Proyectos2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(editarProj, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -227,7 +233,9 @@ public class ViewProyectos extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editarProj, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarProj, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Proyectos2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
@@ -271,11 +279,21 @@ public class ViewProyectos extends javax.swing.JPanel {
         }else
             JOptionPane.showMessageDialog(this, "Seleccione un proyecto!");
     }//GEN-LAST:event_editarProjActionPerformed
+
+    private void Proyectos2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Proyectos2ActionPerformed
+        // TODO add your handling code here:
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            this.dtsk.setTasks( Integer.valueOf( String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 0) ) ) );
+            this.dtsk.setVisible(true);
+        }else
+            JOptionPane.showMessageDialog(this, "Seleccione un proyecto!");
+    }//GEN-LAST:event_Proyectos2ActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Descripcion;
     private javax.swing.JPanel PanelAgregarProyecto;
     private javax.swing.JButton Proyectos1;
+    private javax.swing.JButton Proyectos2;
     private javax.swing.JTextField Titulo;
     private javax.swing.JButton editarProj;
     private javax.swing.JLabel jLabel1;

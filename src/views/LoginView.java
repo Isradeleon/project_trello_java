@@ -8,6 +8,7 @@ import models.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import session_manager.Session;
 /**
  *
  * @author cesargustavo
@@ -47,7 +48,7 @@ public class LoginView extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Iniciar Secion");
+        setTitle("Iniciar Sesión");
         setResizable(false);
         setSize(new java.awt.Dimension(315, 430));
 
@@ -81,7 +82,7 @@ public class LoginView extends javax.swing.JFrame {
         Proyectos.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         Proyectos.setForeground(new java.awt.Color(255, 255, 255));
         Proyectos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Delete-32.png"))); // NOI18N
-        Proyectos.setText("Cancelar");
+        Proyectos.setText("Limpiar");
         Proyectos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProyectosActionPerformed(evt);
@@ -113,10 +114,10 @@ public class LoginView extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jLabel1.setText("USUARIO:");
+        jLabel1.setText("Email:");
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jLabel2.setText("CONTRASEÑA:");
+        jLabel2.setText("Password:");
 
         jPasswordField1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jPasswordField1.setText("1234");
@@ -132,7 +133,7 @@ public class LoginView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addContainerGap(247, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -179,9 +180,8 @@ public class LoginView extends javax.swing.JFrame {
 
     private void ProyectosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProyectosActionPerformed
         // TODO add your handling code here:
-        //usr.insert("rubi", "hola", 1, "cesar@hotmail.com", "1234");
         this.jTextField1.setText("");
-        jPasswordField1.setText("");
+        this.jPasswordField1.setText("");
     }//GEN-LAST:event_ProyectosActionPerformed
 
     // LOGIN ACTION
@@ -194,8 +194,10 @@ public class LoginView extends javax.swing.JFrame {
                 try{
                     if (resSet.first()) {
                         System.out.println(resSet.getString("email"));
-                         nombre = resSet.getString("nombre");
-                         tipo = resSet.getString("tipo");
+                        nombre = resSet.getString("nombre");
+                        tipo = resSet.getString("tipo");
+                        
+                        Session.login(resSet.getInt("tipo"), resSet.getInt("id"), resSet.getString("email"));
                     }
                 }catch(SQLException e){}
                 
@@ -204,16 +206,16 @@ public class LoginView extends javax.swing.JFrame {
                     Admin.setVisible(true);
                     JOptionPane.showMessageDialog(Admin, "Bienvenido admin: "+nombre);
                 }else{
-                    UserView usuario = new UserView();
-                    usuario.setVisible(true);
-                    JOptionPane.showMessageDialog(usuario, "Bienvenido usuario: "+nombre);
+                    UserView user = new UserView();
+                    user.setVisible(true);
+                    JOptionPane.showMessageDialog(user, "Bienvenido usuario: "+nombre);
                 }
                 this.setVisible(false);
             } else {
-                JOptionPane.showMessageDialog(this, "Usuario no registrado!");
+                JOptionPane.showMessageDialog(this, "Error de credenciales!");
             }         
         } else{
-          JOptionPane.showMessageDialog(this, "LLenar los campos!");
+          JOptionPane.showMessageDialog(this, "Llenar los campos!");
         }
        
     }//GEN-LAST:event_Proyectos1ActionPerformed

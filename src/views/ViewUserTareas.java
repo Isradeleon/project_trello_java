@@ -5,17 +5,100 @@
  */
 package views;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import models.Proyecto;
+import models.Tarea;
+import session_manager.Session;
+
 /**
  *
  * @author Isra
  */
 public class ViewUserTareas extends javax.swing.JFrame {
-
+    private Tarea tareas;
+    private Proyecto proj;
+    private DefaultTableModel modelo;
+    private ResultSet results;
+    
     /**
      * Creates new form ViewUserTareas
      */
     public ViewUserTareas() {
         initComponents();
+        modelo = new DefaultTableModel(){
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        };
+        modelo.addColumn("ID");
+        modelo.addColumn("Titulo");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Status");
+        modelo.addColumn("Proyecto");
+        
+        this.jTable1.setModel(modelo);
+        
+        // COLORES DE LAS ROWS
+        this.jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                        
+                String status = (String)table.getModel().getValueAt(row, 5);
+                if (isSelected) {
+                    c.setBackground(Color.blue.darker());
+                    c.setForeground(Color.white);
+                }else{
+                    if (col == 5) {
+                        c.setForeground(Color.white);
+                        switch(status){
+                            case "Pendiente":
+                                c.setBackground(Color.orange.darker());
+                            break;
+                            case "Cancelada":
+                                c.setBackground(Color.red.darker());
+                            break;
+                            case "Terminada":
+                                c.setBackground(Color.green.darker());
+                            break;
+                        }
+                    }else{
+                        c.setBackground(null);
+                        c.setForeground(Color.black);
+                    }
+                }
+                return this;
+            }   
+        });
+        this.jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    public void actualizarTabla(){
+        modelo.setRowCount(0);
+        results=tareas.findByUserId(Session.getId());
+        try{
+            while(results.next()){
+                modelo.addRow(new Object[]{
+                    results.getString("id"),
+                    results.getString("titulo"),
+                    results.getString("descripcion"),
+                    (results.getInt("status") == 1 ? "Pendiente" : (results.getInt("status") == 2) ? "Cancelada" : "Terminada" ),
+                    results.getString("p_titulo")
+                });
+            }
+            this.jTable1.setModel(modelo);
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -27,17 +110,46 @@ public class ViewUserTareas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel1.setText("Mis tareas");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         pack();
@@ -79,5 +191,8 @@ public class ViewUserTareas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
