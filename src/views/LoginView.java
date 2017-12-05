@@ -188,27 +188,24 @@ public class LoginView extends javax.swing.JFrame {
     private void Proyectos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Proyectos1ActionPerformed
         // TODO add your handling code here:
         if (!"".equals(String.valueOf(jPasswordField1.getPassword() ) ) && !"".equals(jTextField1.getText())) {
-            String nombre ="",tipo="";
             resSet = usr.validUser(this.jTextField1.getText(), String.valueOf( this.jPasswordField1.getPassword() ) );
             if (resSet != null) {
                 try{
                     if (resSet.first()) {
-                        System.out.println(resSet.getString("email"));
-                        nombre = resSet.getString("nombre");
-                        tipo = resSet.getString("tipo");
-                        
-                        Session.login(resSet.getInt("tipo"), resSet.getInt("id"), resSet.getString("email"));
+                        Session.login(resSet.getInt("tipo"), 
+                            resSet.getInt("id"), resSet.getString("email"), 
+                            resSet.getString("nombre"),resSet.getString("apellidos"));
                     }
                 }catch(SQLException e){}
                 
-                if("1".equals(tipo)){
+                if(Session.getTipo() == 1){
                     AdminView Admin = new AdminView();
                     Admin.setVisible(true);
-                    JOptionPane.showMessageDialog(Admin, "Bienvenido admin: "+nombre);
+                    JOptionPane.showMessageDialog(Admin, "Bienvenido admin: "+Session.getNombre());
                 }else{
                     UserView user = new UserView();
                     user.setVisible(true);
-                    JOptionPane.showMessageDialog(user, "Bienvenido usuario: "+nombre);
+                    JOptionPane.showMessageDialog(user, "Bienvenido usuario: "+Session.getNombre());
                 }
                 this.setVisible(false);
             } else {
