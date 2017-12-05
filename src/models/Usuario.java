@@ -25,7 +25,7 @@ public class Usuario extends Model_T{
                         (!"".equals(email) && null != email ? " email = '"+String.valueOf(email)+"', " : " ")
                         +
                         (!"".equals(password) && null != password ? " password = '"+this.md5(password)+"', " : " ")
-                        + " status = "+String.valueOf(tipo)
+                        + " tipo = "+String.valueOf(tipo)
                         + " where id = "+String.valueOf(id_usuario);
                 stm.execute(query);
             }catch(SQLException e){

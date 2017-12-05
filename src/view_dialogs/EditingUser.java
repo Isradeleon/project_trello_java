@@ -5,20 +5,49 @@
  */
 package view_dialogs;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import models.Usuario;
+import views.ViewUsuarios;
+
 /**
  *
  * @author Isra
  */
 public class EditingUser extends javax.swing.JDialog {
-
+    private Usuario usr;
+    private ViewUsuarios vu;
+    private int ID = 0;
+    private ResultSet results;
     /**
      * Creates new form EditingUser
      */
     public EditingUser(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        usr= new Usuario();
     }
-
+    
+    public void setViewUsuarios(ViewUsuarios vu){
+        this.vu=vu;
+    }
+    
+     public void setUserData(int usuario_id){
+        this.setLocationRelativeTo(null);
+        try{
+            results=usr.findById(usuario_id);
+            if (results.first()) {
+                this.txtnombre.setText(results.getString("nombre"));
+                this.txtap.setText(results.getString("apellidos"));
+                this.txtcorreo.setText(results.getString("email"));
+                this.ID = results.getInt("id");
+                this.jComboBox1.setSelectedIndex(results.getInt("tipo") - 1);
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +57,7 @@ public class EditingUser extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        AddUser = new javax.swing.JButton();
+        guardarBTN = new javax.swing.JButton();
         txtcorreo = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         txtap = new javax.swing.JTextField();
@@ -42,14 +71,15 @@ public class EditingUser extends javax.swing.JDialog {
         txtcontra = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Editar Usuario");
 
-        AddUser.setBackground(new java.awt.Color(0, 42, 73));
-        AddUser.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        AddUser.setForeground(new java.awt.Color(255, 255, 255));
-        AddUser.setText("Guardar");
-        AddUser.addActionListener(new java.awt.event.ActionListener() {
+        guardarBTN.setBackground(new java.awt.Color(0, 42, 73));
+        guardarBTN.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        guardarBTN.setForeground(new java.awt.Color(255, 255, 255));
+        guardarBTN.setText("Guardar");
+        guardarBTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddUserActionPerformed(evt);
+                guardarBTNActionPerformed(evt);
             }
         });
 
@@ -88,7 +118,7 @@ public class EditingUser extends javax.swing.JDialog {
         jLabel7.setText("Correo:");
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel1.setText("Editar Usuario");
+        jLabel1.setText("Datos del usuario");
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel8.setText("Contraseña:");
@@ -112,7 +142,7 @@ public class EditingUser extends javax.swing.JDialog {
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(txtcontra, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(AddUser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                                .addComponent(guardarBTN, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                                 .addComponent(txtnombre)
                                 .addComponent(txtap, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtcorreo, javax.swing.GroupLayout.Alignment.LEADING))))
@@ -146,27 +176,21 @@ public class EditingUser extends javax.swing.JDialog {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(txtcontra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(21, 21, 21)
-                    .addComponent(AddUser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(guardarBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(56, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void AddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddUserActionPerformed
+    private void guardarBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBTNActionPerformed
         // TODO add your handling code here:
-        if (!"".equals(this.txtnombre.getText()) && !"".equals(this.txtap.getText()) && !"".equals(this.txtcorreo.getText())&& !"".equals(String.valueOf(this.txtcontra.getPassword()))) {
-            usr.insert(this.txtnombre.getText(), this.txtap.getText(), this.jComboBox1.getSelectedIndex() + 1, this.txtcorreo.getText(),String.valueOf(this.txtcontra.getPassword()) );
-            JOptionPane.showMessageDialog(this, "Usuario registrado con exito!");
-            this.txtnombre.setText("");
-            this.txtap.setText("");
-            this.txtcorreo.setText("");
-            this.txtcontra.setText("");
-            this.actualizarTabla();
-        }else{
-            JOptionPane.showMessageDialog(this, "Llenar los campos!");
-        }
-    }//GEN-LAST:event_AddUserActionPerformed
+        usr.update(ID, this.txtnombre.getText().trim(), 
+                this.txtap.getText().trim(),this.jComboBox1.getSelectedIndex()+1 , 
+                this.txtcorreo.getText().trim(), String.valueOf(this.txtcontra.getPassword()));
+        this.vu.actualizarTabla();
+        JOptionPane.showMessageDialog(this, "Usuario actualizado con exito!");
+    }//GEN-LAST:event_guardarBTNActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -219,7 +243,7 @@ public class EditingUser extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddUser;
+    private javax.swing.JButton guardarBTN;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

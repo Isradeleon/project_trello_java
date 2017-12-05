@@ -11,9 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import view_dialogs.EditingUser;
 
 /**
  *
@@ -23,13 +22,17 @@ public class ViewUsuarios extends javax.swing.JPanel {
     private Usuario usr;
     private DefaultTableModel modelo;
     private ResultSet results;
-
+    private EditingUser edu;
     /**
      * Creates new form ViewAddUser
      */
-    public ViewUsuarios() {
+    public ViewUsuarios(AdminView _frame) {
         initComponents();
         usr = new Usuario();
+        
+        edu = new EditingUser(_frame,true);
+        edu.setViewUsuarios(this);
+        
         modelo = new DefaultTableModel(){
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
@@ -88,6 +91,7 @@ public class ViewUsuarios extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         txtcontra = new javax.swing.JPasswordField();
+        editarUsuario = new javax.swing.JButton();
 
         PanelAgregarProyecto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -156,29 +160,44 @@ public class ViewUsuarios extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        editarUsuario.setBackground(new java.awt.Color(0, 42, 73));
+        editarUsuario.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        editarUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        editarUsuario.setText("Editar");
+        editarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelAgregarProyectoLayout = new javax.swing.GroupLayout(PanelAgregarProyecto);
         PanelAgregarProyecto.setLayout(PanelAgregarProyectoLayout);
         PanelAgregarProyectoLayout.setHorizontalGroup(
             PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgregarProyectoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtcontra, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(AddUser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                            .addComponent(txtnombre)
-                            .addComponent(txtap, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtcorreo, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+                .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(editarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
+                        .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtcontra, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(AddUser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                                    .addComponent(txtnombre)
+                                    .addComponent(txtap, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtcorreo, javax.swing.GroupLayout.Alignment.LEADING))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         PanelAgregarProyectoLayout.setVerticalGroup(
@@ -212,7 +231,9 @@ public class ViewUsuarios extends javax.swing.JPanel {
                         .addComponent(txtcontra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)
                         .addComponent(AddUser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -257,21 +278,23 @@ public class ViewUsuarios extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
-       /* int colum = jTable1.getColumnModel().getColumnIndexAtX(evt.getX());
-        int  row = evt.getY()/jTable1.getRowHeight();
-        
-        if (row < jTable1.getRowCount() && row >=0 && colum < jTable1.getColumnCount() && colum >=0) {
-            
-            id =(int) jTable1.getValueAt(row,0);
-            txtnombre.setText(""+jTable1.getValueAt(row,1));
-        }*/
+       
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void editarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarUsuarioActionPerformed
+        // TODO add your handling code here:
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            this.edu.setUserData( Integer.valueOf( String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 0) ) ) );
+            this.edu.setVisible(true);
+        }else
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario!");
+    }//GEN-LAST:event_editarUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddUser;
     private javax.swing.JPanel PanelAgregarProyecto;
+    private javax.swing.JButton editarUsuario;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

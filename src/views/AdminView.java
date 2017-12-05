@@ -33,9 +33,9 @@ public class AdminView extends javax.swing.JFrame {
         
         view_projects=new ViewProyectos(this);
         view_tasks= new ViewTareas(this);
+        view_users= new ViewUsuarios(this);
         
         general= new ViewDashboard();
-        view_users= new ViewUsuarios();
     }
 
     /**
