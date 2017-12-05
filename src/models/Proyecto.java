@@ -10,6 +10,34 @@ import java.sql.Statement;
  * @author Isra
  */
 public class Proyecto extends Model_T {
+    public ResultSet getCount(){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = "select count(id) as cuenta from proyectos";
+                ResultSet results = stm.executeQuery(query);
+                return results;
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
+    
+    public ResultSet getAllPie(){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = "select status, count(id) as cuenta from proyectos group by status";
+                ResultSet results = stm.executeQuery(query);
+                return results;
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
+    
     public void update(int id_proyecto, String titulo, String descripcion, int status){
         if (this.connectDB() != null) {
             try{

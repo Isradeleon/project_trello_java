@@ -211,7 +211,7 @@ public class DialogRemoveTaskUser extends javax.swing.JDialog {
             this.setTareasUsuario();
             JOptionPane.showMessageDialog(this, "Tarea(s) removida(s) con éxito!");
         }else
-        JOptionPane.showMessageDialog(this, "Seleccione al menos una tarea!");
+            JOptionPane.showMessageDialog(this, "Seleccione al menos una tarea!");
     }//GEN-LAST:event_remueveTareaActionPerformed
 
     private void cancelaTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelaTareaActionPerformed

@@ -17,7 +17,7 @@ import models.Proyecto;
 public class AdminView extends javax.swing.JFrame {
     ViewProyectos view_projects;
     ViewUsuarios view_users;
-    ViewDashboard general;
+    ViewDashboard view_dashboard;
     ViewTareas view_tasks;
     ResultSet results;
     Proyecto proj;
@@ -35,7 +35,7 @@ public class AdminView extends javax.swing.JFrame {
         view_tasks= new ViewTareas(this);
         view_users= new ViewUsuarios(this);
         
-        general= new ViewDashboard();
+        view_dashboard= new ViewDashboard();
     }
 
     /**
@@ -57,6 +57,12 @@ public class AdminView extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         exitButton = new javax.swing.JButton();
         PanelGeneral = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
@@ -108,7 +114,7 @@ public class AdminView extends javax.swing.JFrame {
         Home.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         Home.setForeground(new java.awt.Color(255, 255, 255));
         Home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Home-32.png"))); // NOI18N
-        Home.setText("Principal");
+        Home.setText("Dashboard");
         Home.setContentAreaFilled(false);
         Home.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Home.setFocusCycleRoot(true);
@@ -193,15 +199,58 @@ public class AdminView extends javax.swing.JFrame {
 
         PanelGeneral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Bienvenido al sistema de administración.");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Navegue entre los menús de la izquierda de la siguiente forma:");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("- Dashboard: Apartado de gráficas.");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setText("- Proyectos: Aquí se agregan y editan los proyectos con los que se trabajará.");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setText("- Usuarios: Agregue y edite la información de los usuarios así como de sus tareas.");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel7.setText("- Tareas: Agregue y edite las tareas de los proyectos. ");
+
         javax.swing.GroupLayout PanelGeneralLayout = new javax.swing.GroupLayout(PanelGeneral);
         PanelGeneral.setLayout(PanelGeneralLayout);
         PanelGeneralLayout.setHorizontalGroup(
             PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGroup(PanelGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1)
+                    .addGroup(PanelGeneralLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelGeneralLayout.setVerticalGroup(
             PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 382, Short.MAX_VALUE)
+            .addGroup(PanelGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
@@ -218,7 +267,7 @@ public class AdminView extends javax.swing.JFrame {
                     .addComponent(PanelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 479, Short.MAX_VALUE)))
+                        .addGap(0, 476, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -239,12 +288,12 @@ public class AdminView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
-        general= new ViewDashboard();
-        general.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
+        view_dashboard.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
         PanelGeneral.removeAll();
-        PanelGeneral.add(general,BorderLayout.CENTER);
+        PanelGeneral.add(view_dashboard,BorderLayout.CENTER);
         PanelGeneral.revalidate();
         PanelGeneral.repaint();
+        view_dashboard.actualizarDashboard();
     }//GEN-LAST:event_HomeActionPerformed
 
     private void ProyectosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProyectosActionPerformed
@@ -333,7 +382,13 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JButton Tareas;
     private javax.swing.JButton exitButton;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

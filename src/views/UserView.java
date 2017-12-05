@@ -42,6 +42,10 @@ public class UserView extends javax.swing.JFrame {
         Salir = new javax.swing.JButton();
         labelUsuario = new javax.swing.JLabel();
         PanelGeneral = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -146,15 +150,46 @@ public class UserView extends javax.swing.JFrame {
 
         PanelGeneral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("Bienvenido al sistema de usuario.");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Navegue entre los menús de la izquierda de la siguiente forma:");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("- Principal: .");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel7.setText("- Tareas: Tareas asignadas a usted. ");
+
         javax.swing.GroupLayout PanelGeneralLayout = new javax.swing.GroupLayout(PanelGeneral);
         PanelGeneral.setLayout(PanelGeneralLayout);
         PanelGeneralLayout.setHorizontalGroup(
             PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(PanelGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1)
+                    .addGroup(PanelGeneralLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7))))
+                .addContainerGap(314, Short.MAX_VALUE))
         );
         PanelGeneralLayout.setVerticalGroup(
             PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(PanelGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -253,6 +288,10 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JButton Proyectos;
     private javax.swing.JButton Salir;
     private javax.swing.JFrame jFrame1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelUsuario;

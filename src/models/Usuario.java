@@ -156,6 +156,20 @@ public class Usuario extends Model_T{
         return null;
     }
     
+    public ResultSet getCount(){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = "select count(id) as cuenta from usuarios";
+                ResultSet results = stm.executeQuery(query);
+                return results;
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
+    
     public ResultSet getAll(){
         if (this.connectDB() != null) {
             try{
