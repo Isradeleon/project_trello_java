@@ -101,6 +101,18 @@ public class ViewTareas extends javax.swing.JPanel {
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
+        
+        if (this.jComboBox1.getItemCount() > 0) {
+            this.agregaTarea.setEnabled(true);
+            this.txttitulo.setEnabled(true);
+            this.txtdescripcion.setEnabled(true);
+            this.jComboBox1.setEnabled(true);
+        }else{
+            this.agregaTarea.setEnabled(false);
+            this.txttitulo.setEnabled(false);
+            this.txtdescripcion.setEnabled(false);
+            this.jComboBox1.setEnabled(false);
+        }
     }
     
     public void actualizarTabla(){
@@ -128,18 +140,6 @@ public class ViewTareas extends javax.swing.JPanel {
             this.jTable1.setModel(modelo);
         }catch(SQLException e){
             System.out.println(e.getMessage());
-        }
-        
-        if (this.jComboBox1.getItemCount() > 0) {
-            this.agregaTarea.setEnabled(true);
-            this.txttitulo.setEnabled(true);
-            this.txtdescripcion.setEnabled(true);
-            this.jComboBox1.setEnabled(true);
-        }else{
-            this.agregaTarea.setEnabled(false);
-            this.txttitulo.setEnabled(false);
-            this.txtdescripcion.setEnabled(false);
-            this.jComboBox1.setEnabled(false);
         }
     }
     /**

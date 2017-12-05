@@ -35,6 +35,7 @@ public class EditingUser extends javax.swing.JDialog {
     
      public void setUserData(int usuario_id){
         this.setLocationRelativeTo(null);
+        this.txtcontra.setText("");
         try{
             results=usr.findById(usuario_id);
             if (results.first()) {
