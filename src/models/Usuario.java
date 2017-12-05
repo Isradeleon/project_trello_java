@@ -13,6 +13,27 @@ import java.security.NoSuchAlgorithmException;
  * @author Isra
  */
 public class Usuario extends Model_T{
+    public void update(int id_usuario, String nombre, String apellidos, int tipo, String email, String password){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = "update usuarios set "+
+                        (!"".equals(nombre) && null != nombre ? " nombre = '"+String.valueOf(nombre)+"', " : " ")
+                        +
+                        (!"".equals(apellidos) && null != apellidos ? " apellidos = '"+String.valueOf(apellidos)+"', " : " ")
+                        +
+                        (!"".equals(email) && null != email ? " email = '"+String.valueOf(email)+"', " : " ")
+                        +
+                        (!"".equals(password) && null != password ? " password = '"+this.md5(password)+"', " : " ")
+                        + " status = "+String.valueOf(tipo)
+                        + " where id = "+String.valueOf(id_usuario);
+                stm.execute(query);
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    
     public ResultSet validUser(String email, String password){
         if (this.connectDB() != null) {
             try{
