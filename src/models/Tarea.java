@@ -147,4 +147,27 @@ public class Tarea extends Model_T {
         }
         return null;
     }
+    
+    public ResultSet getAllPendingNotUser(){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = "select tareas.*, "
+                        + "usuarios.nombre as u_nombre, "
+                        + "usuarios.apellidos as u_apellidos, "
+                        + "usuarios.email as u_email, "
+                        + "proyectos.titulo as p_titulo, "
+                        + "proyectos.id as p_id "
+                        + "from tareas inner join proyectos on proyectos.id = tareas.proyecto_id "
+                        + "left join asignaciones on tareas.id = asignaciones.tarea_id "
+                        + "left join usuarios on usuarios.id = asignaciones.usuario_id "
+                        + "where tareas.status = 1 and asignaciones.usuario_id is null";
+                ResultSet results = stm.executeQuery(query);
+                return results;
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
 }

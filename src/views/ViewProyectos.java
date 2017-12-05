@@ -262,7 +262,7 @@ public class ViewProyectos extends javax.swing.JPanel {
         // TODO add your handling code here:
         if ( !"".equals(this.Titulo.getText()) && !"".equals(this.Descripcion.getText()) ) {
             proj.insert(this.Titulo.getText(),this.Descripcion.getText(),1);
-            JOptionPane.showMessageDialog(this, "Proyecto "+this.Titulo.getText()+" registrado con exito!");
+            JOptionPane.showMessageDialog(this, "Proyecto '"+this.Titulo.getText()+"' registrado con exito!");
             this.Titulo.setText("");
             this.Descripcion.setText("");
             this.actualizarTabla();

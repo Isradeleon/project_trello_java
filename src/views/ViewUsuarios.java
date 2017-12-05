@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+import view_dialogs.DialogAddTaskUser;
+import view_dialogs.DialogRemoveTaskUser;
 import view_dialogs.EditingUser;
 
 /**
@@ -23,6 +25,8 @@ public class ViewUsuarios extends javax.swing.JPanel {
     private DefaultTableModel modelo;
     private ResultSet results;
     private EditingUser edu;
+    private DialogAddTaskUser datu;
+    private DialogRemoveTaskUser drtu;
     /**
      * Creates new form ViewAddUser
      */
@@ -32,6 +36,9 @@ public class ViewUsuarios extends javax.swing.JPanel {
         
         edu = new EditingUser(_frame,true);
         edu.setViewUsuarios(this);
+        
+        datu = new DialogAddTaskUser(_frame,true);
+        drtu = new DialogRemoveTaskUser(_frame,true);
         
         modelo = new DefaultTableModel(){
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -92,6 +99,8 @@ public class ViewUsuarios extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         txtcontra = new javax.swing.JPasswordField();
         editarUsuario = new javax.swing.JButton();
+        asignaTarea = new javax.swing.JButton();
+        tareasAsignadas = new javax.swing.JButton();
 
         PanelAgregarProyecto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -170,17 +179,34 @@ public class ViewUsuarios extends javax.swing.JPanel {
             }
         });
 
+        asignaTarea.setBackground(new java.awt.Color(0, 42, 73));
+        asignaTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        asignaTarea.setForeground(new java.awt.Color(255, 255, 255));
+        asignaTarea.setText("Asignar tarea");
+        asignaTarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asignaTareaActionPerformed(evt);
+            }
+        });
+
+        tareasAsignadas.setBackground(new java.awt.Color(0, 42, 73));
+        tareasAsignadas.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        tareasAsignadas.setForeground(new java.awt.Color(255, 255, 255));
+        tareasAsignadas.setText("Tareas asignadas");
+        tareasAsignadas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tareasAsignadasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelAgregarProyectoLayout = new javax.swing.GroupLayout(PanelAgregarProyecto);
         PanelAgregarProyecto.setLayout(PanelAgregarProyectoLayout);
         PanelAgregarProyectoLayout.setHorizontalGroup(
             PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgregarProyectoLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(editarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -197,7 +223,14 @@ public class ViewUsuarios extends javax.swing.JPanel {
                                     .addComponent(txtap, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtcorreo, javax.swing.GroupLayout.Alignment.LEADING))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE))
+                    .addGroup(PanelAgregarProyectoLayout.createSequentialGroup()
+                        .addGap(268, 268, 268)
+                        .addComponent(tareasAsignadas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(asignaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(editarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         PanelAgregarProyectoLayout.setVerticalGroup(
@@ -232,7 +265,10 @@ public class ViewUsuarios extends javax.swing.JPanel {
                         .addGap(21, 21, 21)
                         .addComponent(AddUser, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(editarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(asignaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tareasAsignadas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
@@ -290,10 +326,30 @@ public class ViewUsuarios extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Seleccione un usuario!");
     }//GEN-LAST:event_editarUsuarioActionPerformed
 
+    private void asignaTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignaTareaActionPerformed
+        // TODO add your handling code here:
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            this.datu.setPreparedData(Integer.valueOf( String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 0) ) ));
+            this.datu.setTareasPendientes();
+            this.datu.setVisible(true);
+        }else
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario!");
+    }//GEN-LAST:event_asignaTareaActionPerformed
+
+    private void tareasAsignadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tareasAsignadasActionPerformed
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            this.drtu.setPreparedData(Integer.valueOf( String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 0) ) ));
+            this.drtu.setTareasUsuario();
+            this.drtu.setVisible(true);
+        }else
+            JOptionPane.showMessageDialog(this, "Seleccione un usuario!");
+    }//GEN-LAST:event_tareasAsignadasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddUser;
     private javax.swing.JPanel PanelAgregarProyecto;
+    private javax.swing.JButton asignaTarea;
     private javax.swing.JButton editarUsuario;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -304,6 +360,7 @@ public class ViewUsuarios extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton tareasAsignadas;
     private javax.swing.JTextField txtap;
     private javax.swing.JPasswordField txtcontra;
     private javax.swing.JTextField txtcorreo;

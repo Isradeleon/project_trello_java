@@ -20,17 +20,16 @@ import models.Usuario;
  *
  * @author Isra
  */
-public class DialogAddTaskUser extends javax.swing.JDialog {
+public class DialogRemoveTaskUser extends javax.swing.JDialog {
     private DefaultTableModel modelo;
     private Tarea tareas;
     private Usuario usr;
     private ResultSet results;
     private int ID_USER = 0;
-    
     /**
-     * Creates new form DialogAddTaskUser
+     * Creates new form DialogRemoveTaskUser
      */
-    public DialogAddTaskUser(java.awt.Frame parent, boolean modal) {
+    public DialogRemoveTaskUser(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         tareas = new Tarea();
@@ -58,7 +57,7 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
                         
                 String status = (String)table.getModel().getValueAt(row, 3);
-                if (isSelected) {
+                if (isSelected && status.equals("Pendiente")) {
                     c.setBackground(Color.blue.darker());
                     c.setForeground(Color.white);
                 }else{
@@ -90,9 +89,9 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
         this.ID_USER=usuario_id;
     };
     
-    public void setTareasPendientes(){
+    public void setTareasUsuario(){
         modelo.setRowCount(0);
-        results=tareas.getAllPendingNotUser();
+        results=tareas.findByUserId(this.ID_USER);
         try{
             while(results.next()){
                 modelo.addRow(new Object[]{
@@ -118,13 +117,17 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        asignaTarea = new javax.swing.JButton();
+        remueveTarea = new javax.swing.JButton();
+        cancelaTarea = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Asignar tarea");
+        setTitle("Lista de tareas");
+
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        jLabel1.setText("Treas del usuario");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,16 +139,23 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jLabel1.setText("Tareas pendientes");
-
-        asignaTarea.setBackground(new java.awt.Color(0, 42, 73));
-        asignaTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        asignaTarea.setForeground(new java.awt.Color(255, 255, 255));
-        asignaTarea.setText("Asignar");
-        asignaTarea.addActionListener(new java.awt.event.ActionListener() {
+        remueveTarea.setBackground(new java.awt.Color(0, 42, 73));
+        remueveTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        remueveTarea.setForeground(new java.awt.Color(255, 255, 255));
+        remueveTarea.setText("Remover");
+        remueveTarea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                asignaTareaActionPerformed(evt);
+                remueveTareaActionPerformed(evt);
+            }
+        });
+
+        cancelaTarea.setBackground(new java.awt.Color(0, 42, 73));
+        cancelaTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        cancelaTarea.setForeground(new java.awt.Color(255, 255, 255));
+        cancelaTarea.setText("Cancelar");
+        cancelaTarea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelaTareaActionPerformed(evt);
             }
         });
 
@@ -156,13 +166,15 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(asignaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cancelaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(remueveTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -173,29 +185,51 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(asignaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(remueveTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void asignaTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignaTareaActionPerformed
+    private void remueveTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remueveTareaActionPerformed
         // TODO add your handling code here:
         if (this.jTable1.getSelectedRowCount() > 0) {
             for (int i = 0; i < this.jTable1.getSelectedRows().length; i++) {
-                usr.addTask(
-                    this.ID_USER, 
-                    Integer.valueOf( 
-                        String.valueOf( this.jTable1.getValueAt(this.jTable1.getSelectedRows()[i], 0) ) 
-                    )
-                );
+                // La tarea no debe ser removida sino es pendiente
+                if (String.valueOf( this.jTable1.getValueAt(this.jTable1.getSelectedRows()[i], 3) ).equals("Pendiente")) {
+                    usr.removeTask(
+                        this.ID_USER,
+                        Integer.valueOf(
+                            String.valueOf( this.jTable1.getValueAt(this.jTable1.getSelectedRows()[i], 0) )
+                        )
+                    );
+                }
             }
-            this.setTareasPendientes();
-            JOptionPane.showMessageDialog(this, "Tarea(s) agregada(s) con éxito!");
+            this.setTareasUsuario();
+            JOptionPane.showMessageDialog(this, "Tarea(s) removida(s) con éxito!");
         }else
-            JOptionPane.showMessageDialog(this, "Seleccione al menos una tarea!");
-    }//GEN-LAST:event_asignaTareaActionPerformed
+        JOptionPane.showMessageDialog(this, "Seleccione al menos una tarea!");
+    }//GEN-LAST:event_remueveTareaActionPerformed
+
+    private void cancelaTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelaTareaActionPerformed
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            for (int i = 0; i < this.jTable1.getSelectedRows().length; i++) {
+                // El update no se ejecuta sino es pendiente
+                if (String.valueOf( this.jTable1.getValueAt(this.jTable1.getSelectedRows()[i], 3) ).equals("Pendiente")) {
+                    tareas.update(Integer.valueOf(
+                            String.valueOf( this.jTable1.getValueAt(this.jTable1.getSelectedRows()[i], 0) )
+                        ) , null, null, 2
+                    );
+                }
+            }
+            this.setTareasUsuario();
+            JOptionPane.showMessageDialog(this, "Tarea(s) cancelada(s) con éxito!");
+        }else
+        JOptionPane.showMessageDialog(this, "Seleccione al menos una tarea!");
+    }//GEN-LAST:event_cancelaTareaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,20 +248,20 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogAddTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRemoveTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogAddTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRemoveTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogAddTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRemoveTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogAddTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRemoveTaskUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogAddTaskUser dialog = new DialogAddTaskUser(new javax.swing.JFrame(), true);
+                DialogRemoveTaskUser dialog = new DialogRemoveTaskUser(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -240,9 +274,10 @@ public class DialogAddTaskUser extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton asignaTarea;
+    private javax.swing.JButton cancelaTarea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton remueveTarea;
     // End of variables declaration//GEN-END:variables
 }
