@@ -12,16 +12,16 @@ import javax.swing.JFrame;
  */
 public class UserView extends javax.swing.JFrame {
      
-     ViewPrincipal principal;
+     ViewTareasUsuario principal;
     /**
      * Creates new form AdminView
      */
     public UserView() {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setUndecorated(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        principal= new ViewPrincipal();
+        principal= new ViewTareasUsuario();
     }
 
     /**
@@ -184,11 +184,16 @@ public class UserView extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(881, 512));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_HomeActionPerformed
+
+    private void ProyectosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProyectosActionPerformed
         // TODO add your handling code here:
         principal.actualizarTabla();
         principal.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
@@ -196,11 +201,6 @@ public class UserView extends javax.swing.JFrame {
         PanelGeneral.add(principal,BorderLayout.CENTER);
         PanelGeneral.revalidate();
         PanelGeneral.repaint();
-    }//GEN-LAST:event_HomeActionPerformed
-
-    private void ProyectosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProyectosActionPerformed
-        // TODO add your handling code here:
-       
     }//GEN-LAST:event_ProyectosActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
