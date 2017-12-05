@@ -272,7 +272,7 @@ public class AdminView extends javax.swing.JFrame {
 
     private void TareasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TareasActionPerformed
         // TODO add your handling code here:
-        results = proj.getAllPending();
+        results = proj.getAll();
         try{
             if (results.first()) {
                 view_tasks.actualizarTabla();
@@ -283,7 +283,7 @@ public class AdminView extends javax.swing.JFrame {
                 PanelGeneral.revalidate();
                 PanelGeneral.repaint();
             }else
-                JOptionPane.showMessageDialog(this, "No hay proyectos pendientes!");
+                JOptionPane.showMessageDialog(this, "No hay proyectos registrados!");
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }

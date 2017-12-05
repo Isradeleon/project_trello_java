@@ -129,6 +129,18 @@ public class ViewTareas extends javax.swing.JPanel {
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
+        
+        if (this.jComboBox1.getItemCount() > 0) {
+            this.agregaTarea.setEnabled(true);
+            this.txttitulo.setEnabled(true);
+            this.txtdescripcion.setEnabled(true);
+            this.jComboBox1.setEnabled(true);
+        }else{
+            this.agregaTarea.setEnabled(false);
+            this.txttitulo.setEnabled(false);
+            this.txtdescripcion.setEnabled(false);
+            this.jComboBox1.setEnabled(false);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -147,7 +159,7 @@ public class ViewTareas extends javax.swing.JPanel {
         txttitulo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        AddTareas = new javax.swing.JButton();
+        agregaTarea = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -179,13 +191,13 @@ public class ViewTareas extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel5.setText("Proyecto:");
 
-        AddTareas.setBackground(new java.awt.Color(0, 42, 73));
-        AddTareas.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        AddTareas.setForeground(new java.awt.Color(255, 255, 255));
-        AddTareas.setText("Agregar");
-        AddTareas.addActionListener(new java.awt.event.ActionListener() {
+        agregaTarea.setBackground(new java.awt.Color(0, 42, 73));
+        agregaTarea.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        agregaTarea.setForeground(new java.awt.Color(255, 255, 255));
+        agregaTarea.setText("Agregar");
+        agregaTarea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddTareasActionPerformed(evt);
+                agregaTareaActionPerformed(evt);
             }
         });
 
@@ -240,7 +252,7 @@ public class ViewTareas extends javax.swing.JPanel {
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(AddTareas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(agregaTarea, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PanelAgregarProyectoLayout.createSequentialGroup()
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -250,7 +262,6 @@ public class ViewTareas extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelAgregarProyectoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(detallesTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(editarTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -275,7 +286,7 @@ public class ViewTareas extends javax.swing.JPanel {
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(AddTareas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(agregaTarea, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelAgregarProyectoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -319,7 +330,7 @@ public class ViewTareas extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txttituloActionPerformed
 
-    private void AddTareasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddTareasActionPerformed
+    private void agregaTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregaTareaActionPerformed
         // TODO add your handling code here:
         if (!"".equals(this.txttitulo.getText()) && !"".equals(this.txtdescripcion.getText())) {
             results = proj.findByTitle(String.valueOf(this.jComboBox1.getSelectedItem()));
@@ -337,7 +348,7 @@ public class ViewTareas extends javax.swing.JPanel {
         }else{
             JOptionPane.showMessageDialog(this, "Llenar los campos!");
         }
-    }//GEN-LAST:event_AddTareasActionPerformed
+    }//GEN-LAST:event_agregaTareaActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
@@ -358,8 +369,8 @@ public class ViewTareas extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AddTareas;
     private javax.swing.JPanel PanelAgregarProyecto;
+    private javax.swing.JButton agregaTarea;
     private javax.swing.JButton detallesTarea;
     private javax.swing.JButton editarTarea;
     private javax.swing.JComboBox<String> jComboBox1;
