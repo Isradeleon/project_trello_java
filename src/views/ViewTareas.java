@@ -6,7 +6,6 @@
 package views;
 import java.awt.Color;
 import java.awt.Component;
-import java.sql.ResultSet;
 import models.Tarea;
 import java.sql.ResultSet;
 import java.sql.SQLException;

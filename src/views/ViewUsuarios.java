@@ -5,7 +5,6 @@
  */
 package views;
 
-import java.sql.ResultSet;
 import models.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
