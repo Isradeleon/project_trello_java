@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import models.Usuario;
 import views.ViewUsuarios;
+import session_manager.Session;
 
 /**
  *
@@ -36,6 +37,8 @@ public class EditingUser extends javax.swing.JDialog {
      public void setUserData(int usuario_id){
         this.setLocationRelativeTo(null);
         this.txtcontra.setText("");
+        this.jComboBox1.setEnabled(usuario_id != Session.getId());
+        
         try{
             results=usr.findById(usuario_id);
             if (results.first()) {
