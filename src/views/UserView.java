@@ -11,8 +11,9 @@ import javax.swing.JFrame;
  * @author cesargustavo
  */
 public class UserView extends javax.swing.JFrame {
-     
-     ViewTareasUsuario principal;
+    ViewDashboardUser view_dashboard;
+    ViewTareasUsuario principal;
+    
     /**
      * Creates new form AdminView
      */
@@ -21,7 +22,8 @@ public class UserView extends javax.swing.JFrame {
         this.setUndecorated(true);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        principal= new ViewTareasUsuario();
+        principal= new ViewTareasUsuario(this);
+        view_dashboard= new ViewDashboardUser();
     }
 
     /**
@@ -84,7 +86,7 @@ public class UserView extends javax.swing.JFrame {
         Home.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         Home.setForeground(new java.awt.Color(255, 255, 255));
         Home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Home-32.png"))); // NOI18N
-        Home.setText("Principal");
+        Home.setText("Dashboard");
         Home.setContentAreaFilled(false);
         Home.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         Home.setFocusCycleRoot(true);
@@ -157,7 +159,7 @@ public class UserView extends javax.swing.JFrame {
         jLabel1.setText("Navegue entre los menús de la izquierda de la siguiente forma:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setText("- Principal: .");
+        jLabel4.setText("- Dashboard: Dashboard del usuario.");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setText("- Tareas: Tareas asignadas a usted. ");
@@ -176,7 +178,7 @@ public class UserView extends javax.swing.JFrame {
                         .addGroup(PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel7))))
-                .addContainerGap(314, Short.MAX_VALUE))
+                .addContainerGap(300, Short.MAX_VALUE))
         );
         PanelGeneralLayout.setVerticalGroup(
             PanelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +204,7 @@ public class UserView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 452, Short.MAX_VALUE))
+                        .addGap(0, 438, Short.MAX_VALUE))
                     .addComponent(PanelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -225,7 +227,12 @@ public class UserView extends javax.swing.JFrame {
 
     private void HomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HomeActionPerformed
         // TODO add your handling code here:
-        
+        view_dashboard.setSize(PanelGeneral.getSize().width,PanelGeneral.getSize().height);
+        PanelGeneral.removeAll();
+        PanelGeneral.add(view_dashboard,BorderLayout.CENTER);
+        PanelGeneral.revalidate();
+        PanelGeneral.repaint();
+        view_dashboard.actualizarDashboard();
     }//GEN-LAST:event_HomeActionPerformed
 
     private void ProyectosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProyectosActionPerformed

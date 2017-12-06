@@ -107,6 +107,7 @@ public class LoginView extends javax.swing.JFrame {
         Proyectos3.setBackground(new java.awt.Color(0, 42, 73));
         Proyectos3.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         Proyectos3.setForeground(new java.awt.Color(255, 255, 255));
+        Proyectos3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/User-Profile-128.png"))); // NOI18N
         Proyectos3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Proyectos3ActionPerformed(evt);

@@ -23,6 +23,23 @@ public class Tarea extends Model_T {
         return null;
     }
     
+    public ResultSet getAllPieUser(int user_id){
+        if (this.connectDB() != null) {
+            try{
+                stm = (Statement)conn.createStatement();
+                query = " select status, count(id) as cuenta from tareas "
+                        + "inner join asignaciones on asignaciones.tarea_id = tareas.id "
+                        + "where asignaciones.usuario_id = "+String.valueOf(user_id)+" "
+                        + "group by status;";
+                ResultSet results = stm.executeQuery(query);
+                return results;
+            }catch(SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return null;
+    }
+    
     public ResultSet getAllPie(){
         if (this.connectDB() != null) {
             try{
@@ -68,12 +85,14 @@ public class Tarea extends Model_T {
         }
     }
     
-    public void updateStatus(int id_tarea, int status){
+    public void updatedFinished(int id_tarea, String desc){
         if (this.connectDB() != null) {
             try{
                 stm = (Statement)conn.createStatement();
-                query = "update tareas set status = "+String.valueOf(status)
-                        +" where id = "+String.valueOf(id_tarea);
+                query = "update tareas set status = 3, "
+                        + "completada_desc = '"+desc+"', "
+                        + "terminada = now() "
+                        + "where id = " + String.valueOf(id_tarea);
                 stm.execute(query);
             }catch(SQLException e){
                 System.out.println(e.getMessage());

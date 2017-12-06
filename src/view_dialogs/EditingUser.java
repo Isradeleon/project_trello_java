@@ -73,6 +73,7 @@ public class EditingUser extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar Usuario");
+        setResizable(false);
 
         guardarBTN.setBackground(new java.awt.Color(0, 42, 73));
         guardarBTN.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N

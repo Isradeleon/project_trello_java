@@ -71,6 +71,7 @@ public class EditingProject extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar proyecto");
+        setResizable(false);
 
         Descripcion.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         Descripcion.setHorizontalAlignment(javax.swing.JTextField.LEFT);

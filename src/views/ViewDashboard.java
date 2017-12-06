@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.table.DefaultTableModel;
 import models.Proyecto;
 import java.util.Locale;
 import models.Tarea;
@@ -25,7 +24,6 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author cesargustavo
  */
 public class ViewDashboard extends javax.swing.JPanel {
-    DefaultTableModel modelo; 
     Proyecto proj;
     Tarea task;
     Usuario usr;

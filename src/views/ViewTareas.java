@@ -15,6 +15,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import models.Proyecto;
+import view_dialogs.DetailsTask;
 import view_dialogs.EditingTask;
 /**
  *
@@ -26,6 +27,7 @@ public class ViewTareas extends javax.swing.JPanel {
         private DefaultTableModel modelo;
         private ResultSet results;
         private EditingTask edt;
+        private DetailsTask dett;
     /**
      * Creates new form ViewTareas
      */
@@ -36,6 +38,7 @@ public class ViewTareas extends javax.swing.JPanel {
         
         edt = new EditingTask(_frame,true);
         edt.setViewTareas(this);
+        dett = new DetailsTask(_frame,true);
         
         modelo = new DefaultTableModel(){
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -364,6 +367,14 @@ public class ViewTareas extends javax.swing.JPanel {
 
     private void detallesTareaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detallesTareaActionPerformed
         // TODO add your handling code here:
+        if (this.jTable1.getSelectedRowCount() > 0) {
+            if (String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 5) ).equals("Terminada")) {
+                dett.setTaskData( Integer.valueOf( String.valueOf( jTable1.getValueAt(jTable1.getSelectedRow(), 0) ) ) );
+                dett.setVisible(true);
+            }else
+                JOptionPane.showMessageDialog(this, "La tarea debe estar Terminada!");
+        }else
+            JOptionPane.showMessageDialog(this, "Seleccione una tarea!");
     }//GEN-LAST:event_detallesTareaActionPerformed
 
 
