@@ -105,7 +105,7 @@ public class Proyecto extends Model_T {
                 stm = (Statement)conn.createStatement();
                 query = "select proyectos.*, count(tareas.id) as count_tareas "
                         + "from proyectos left join tareas on tareas.proyecto_id = proyectos.id "
-                        + "group by proyectos.titulo order by proyectos.id";
+                        + "group by proyectos.id order by proyectos.id";
                 ResultSet results = stm.executeQuery(query);
                 return results;
             }catch(SQLException e){
